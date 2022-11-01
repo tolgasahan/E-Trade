@@ -1,5 +1,5 @@
 class Product {
-  int id = 0;
+  int? id;
   String name = "";
   String description = "";
   double unitPrice = 0.0;
@@ -19,10 +19,10 @@ class Product {
   }
 
   Product.fromObject(dynamic o){
-    this.id = int.tryParse(o["id"])!;
+    this.id = int.tryParse(o["id"].toString())!;
     this.name = o["name"];
     this.description = o["description"];
-    this.unitPrice = double.tryParse(o["unitPrice"])!;
+    this.unitPrice = double.tryParse(o["unitPrice"].toString())!;
 
   }
 }

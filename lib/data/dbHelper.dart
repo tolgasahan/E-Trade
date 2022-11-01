@@ -12,22 +12,21 @@ class DbHelper {
   }
 
   Future<Database?> initializeDb() async {
-    String dbPath = join(await getDatabasesPath(), "etrade.db");
+    String dbPath = join(await getDatabasesPath(), "e_trade2.db");
     var eTradeDb = await openDatabase(dbPath, version: 1, onCreate: createDb);
     return eTradeDb;
   }
 
   void createDb(Database db, int version) async {
     await db.execute(
-        "Create table products(id integer primary key,name text,description text, unitPrice int)");
+         "Create table products(id INTEGER PRIMARY KEY,name text,description text, unitPrice decimal)");
   }
 
-  Future<List<Product>?> getProducts() async{
+  Future<List<Product>> getProducts() async{
     Database? db = await this.db;
+
     var results = await db?.query("products");
-    return List.generate(
-        results!.length,
-            (i){
+    return List.generate(results!.length, (i){
           return Product.fromObject(results[i]);
             });
   }

@@ -56,7 +56,7 @@ class ProductAddState extends State{
   }
 
   void addProduct() async{
-    var result = await dbHelper.insert(Product(txtName.text, txtDescription.text, double.tryParse(txtUnitPrice.text)?? 0.0));
+    var result = await dbHelper.insert(Product(txtName.text, txtDescription.text,double.parse(txtUnitPrice.text) ));
     Navigator.pop(context,true);
   }
 
