@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_flutter_demo/data/dbHelper.dart';
 import 'package:sqflite_flutter_demo/screens/product_add.dart';
-import '../models/product.dart';
+import 'package:sqflite_flutter_demo/screens/product_detail.dart';
+import 'package:sqflite_flutter_demo/models/product.dart';
 
 class ProductList extends StatefulWidget {
   @override
@@ -15,10 +16,10 @@ class ProductListState extends State {
   var dbHelper = DbHelper();
   List<Product>? products;
   int productCount = 0;
+
   @override
   void initState() {
     getProducts();
-
   }
 
   @override
@@ -50,21 +51,22 @@ class ProductListState extends State {
                   backgroundColor: Colors.white, child: Text("Sa")),
               title: Text(this.products![position].name),
               subtitle: Text(this.products![position].description),
-              onTap: () {},
+              onTap: () {
+                goToDetail(this.products![position]);
+              },
             ),
           );
         });
   }
 
   void goToProductAdd() async {
-    bool result = await Navigator.push(
+    bool? result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => ProductAdd()));
     if (result != null) {
       if (result) {
         setState(() {
           getProducts();
         });
-
       }
     }
   }
@@ -72,8 +74,22 @@ class ProductListState extends State {
   void getProducts() async {
     var productsFutures = dbHelper.getProducts();
     productsFutures.then((data) {
+      setState(() {
       this.products = data;
-      productCount = data!.length;
+      productCount = data.length;
+      });
     });
+  }
+
+  void goToDetail(Product product) async {
+    bool? result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ProductDetail(product)));
+    if (result != null) {
+      if (result) {
+
+          getProducts();
+
+      }
+    }
   }
 }
